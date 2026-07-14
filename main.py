@@ -18,19 +18,29 @@ You are given exactly two images:
 
 Task: Decide if Image A and Image B show the SAME physical vehicle instance, or DIFFERENT vehicles.
 
-Silently consider (do not write these out):
-- Body type, make/model cues, color (allow for lighting), proportions
-- Grille/lamps/mirrors/roofline/wheels and other structural cues
-- Instance IDs: plate, stickers, damage, unique accessories
-- Viewpoint/blur/occlusion vs true physical differences
-- Same make/model/color alone is NOT enough for MATCH
-- Prefer MISMATCH on clear class conflicts; UNCERTAIN if evidence is weak
+CRITICAL — ignore license plates entirely:
+- Do NOT read, compare, or reason about plate text, plate blur, or whether a plate is visible.
+- Images are often small/pixelated; plate cues are unreliable and must not decide MATCH or MISMATCH.
+
+Silently consider only these factors (do not write them out):
+- Body type / silhouette and overall proportions
+- Color (allow for lighting, shadows, white-balance, night)
+- Make/model cues: grille family, headlamp/taillamp shape, bumper, badge style
+- Structural geometry: roofline, mirrors, windows, wheel arches, rim/hub design
+- Non-plate instance cues: stickers, decals, damage, dents, unique accessories
+- Viewpoint / blur / occlusion vs true physical differences
+
+Decision rules:
+- Prefer MATCH when body type, color, and structural/design cues are consistent across views
+- Prefer MISMATCH only on clear conflicts in body type, lamp/grille family, proportions, or distinctive non-plate features
+- Do not treat missing/unclear plates as evidence of different vehicles
+- Prefer UNCERTAIN only when non-plate evidence is genuinely weak or conflicting
 
 Output ONLY these three lines — no summaries, no analysis, no extra text:
 
-Verdict: MATCH | MISMATCH
+Verdict: MATCH | MISMATCH | UNCERTAIN
 Confidence: <integer 0-100>
-Key_evidence: <one short sentence>
+Key_evidence: <one short sentence; do not mention plates>
 """
 
 
