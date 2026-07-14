@@ -16,53 +16,21 @@ You are given exactly two images:
 - Image A = first image
 - Image B = second image
 
-Task: Decide whether Image A and Image B show the SAME physical vehicle instance (same unique car), or DIFFERENT vehicles.
+Task: Decide if Image A and Image B show the SAME physical vehicle instance, or DIFFERENT vehicles.
 
-Important distinctions:
-- SAME identity: one specific car seen again (possibly different camera, angle, time, weather, lighting, crop, or occlusion).
-- SAME make/model/color is NOT enough for a match if they could be two different instances.
-- DIFFERENT identity: another vehicle, even if similar class/color/model.
+Silently consider (do not write these out):
+- Body type, make/model cues, color (allow for lighting), proportions
+- Grille/lamps/mirrors/roofline/wheels and other structural cues
+- Instance IDs: plate, stickers, damage, unique accessories
+- Viewpoint/blur/occlusion vs true physical differences
+- Same make/model/color alone is NOT enough for MATCH
+- Prefer MISMATCH on clear class conflicts; UNCERTAIN if evidence is weak
 
-Analyze systematically (note uncertainty when evidence is weak):
+Output ONLY these three lines — no summaries, no analysis, no extra text:
 
-1) Global / class-level
-   - Body type / silhouette (sedan, SUV, hatchback, pickup, van, coupe, etc.)
-   - Approximate size / proportions
-   - Primary color and secondary colors (account for lighting, shadows, white-balance, night/IR)
-   - Make and model cues if visible (badge, grille family, lamp signature, bumper shape)
-
-2) Structure / geometry
-   - Front/rear fascia shape, grille, bumper openings
-   - Headlamp / taillamp shape and internal structure
-   - Mirror shape, roof line, window geometry, wheel-arch shape
-   - Wheel / hubcap / rim design if visible
-   - Any aftermarket parts (racks, antennas, wraps)
-
-3) Instance-level identifiers (strongest ReID signals)
-   - License plate / plate region (partial plates count)
-   - Stickers, decals, text, parking permits
-   - Damage, dents, scratches, cracks, missing parts
-   - Dirt / wear patterns if distinctive
-   - Unique accessories (tow hitch, antennas, bike rack, cargo)
-
-4) Capture conditions (do not confuse with identity)
-   - Viewpoint (front/side/rear/oblique), distance, crop, blur, resolution
-   - Occlusion, motion blur, glare, night lighting
-   Explain whether apparent differences are likely imaging artifacts vs real physical differences.
-
-Decision rules:
-- Prefer MISMATCH if class-level features clearly conflict (body type, lamp family, clear color under good light), unless explained by imaging.
-- Prefer MATCH only with converging instance cues (plate, damage, stickers, distinctive accessory) and compatible global features.
-- Use UNCERTAIN when images are too degraded, too dissimilar in viewpoint with no shared identifiers, or evidence conflicts.
-
-Output format (strict):
-1) Short per-image summary (2–4 bullets each for A and B).
-2) Comparison with evidence for MATCH vs MISMATCH.
-3) Final block exactly as:
-
-Verdict: MATCH | MISMATCH | UNCERTAIN
+Verdict: MATCH | MISMATCH
 Confidence: <integer 0-100>
-Key_evidence: <one sentence>
+Key_evidence: <one short sentence>
 """
 
 
