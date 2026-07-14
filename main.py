@@ -6,7 +6,7 @@ import argparse
 import sys
 from pathlib import Path
 from typing import Any
-
+from time import time
 import ollama
 
 # Generic prompt usable across vision models (Gemma, Qwen-VL, LLaVA, etc.).
@@ -161,8 +161,11 @@ def main() -> None:
     print(f"Loading {args.model} and analyzing images...\n")
 
     try:
+        load_s = time()
         _pull_model(args.model)
+        print(f"Model load time: {time() - load_s} s")
 
+        infer_s = time()
         response = ollama.chat(
             model=args.model,
             messages=[
@@ -179,6 +182,7 @@ def main() -> None:
                 "num_ctx": args.num_ctx,
             },
         )
+        print(f"Model inference time: {time() - infer_s} s")
         _print_response(response)
 
     except Exception as exc:  # noqa: BLE001 - surface Ollama/runtime errors cleanly at CLI
