@@ -3,6 +3,7 @@ name = "vehicle-reid"
 version = "0.1.0"
 requires-python = ">=3.10"
 dependencies = [
+    "ollama>=0.6.2",
     "pillow>=12.3.0",
     "torch>=2.12.1",
     "transformers>=5.13.0",
