@@ -31,7 +31,24 @@ Confidence: [0-100]%"""
 
     try:
         # This forces Ollama to download the model if it doesn't exist locally
-        ollama.pull(args.model)
+        print("Starting download (if not already cached)...")
+        for progress in ollama.pull(args.model, stream=True):
+            status = progress.get('status', '')
+
+            # If the response contains download metrics, calculate the percentage
+            if 'total' in progress and 'completed' in progress and progress['total'] > 0:
+                percent = (progress['completed'] / progress['total']) * 100
+                # Grab a short snippet of the layer hash for display
+                digest = progress.get('digest', '')[7:17]
+
+                # The '\r' at the end carriage-returns to overwrite the same line in the terminal
+                print(f"Downloading layer [{digest}] ... {percent:.1f}%", end='\r')
+            else:
+                # Print generic statuses like "pulling manifest" or "verifying sha256"
+                # The spaces at the end ensure it clears out any longer previous text
+                print(f"{status.capitalize()}" + " " * 20, end='\r')
+
+        print("\n\nModel ready! Analyzing images...\n")
 
         # 3. Call the Ollama Python API
         response = ollama.chat(
