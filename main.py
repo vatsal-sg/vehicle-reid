@@ -24,7 +24,7 @@ You must methodically analyze the following parameters in order:
 
 First, write out your step-by-step reasoning. 
 At the very end of your response, you must output exactly two lines in this format:
-Verdict: [MATCH / MISMATCH / UNCERTAIN]
+Verdict: [MATCH / MISMATCH]
 Confidence: [0-100]%"""
 
     print(f"Loading {args.model} and analyzing images...\n")
