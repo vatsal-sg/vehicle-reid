@@ -30,6 +30,9 @@ Confidence: [0-100]%"""
     print(f"Loading {args.model} and analyzing images...\n")
 
     try:
+        # This forces Ollama to download the model if it doesn't exist locally
+        ollama.pull(args.model)
+
         # 3. Call the Ollama Python API
         response = ollama.chat(
             model=args.model,
